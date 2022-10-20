@@ -18,6 +18,11 @@ pipeline {
                 jacoco execPattern: 'target/jacoco.exec'
               }
             }
-        }   
+        }
+      stage {
+        steps {
+          sh 'printenv'
+        }
+      }   
     }
 }
