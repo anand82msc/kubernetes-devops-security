@@ -28,6 +28,11 @@ pipeline {
                 pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
               }
             }
+        }
+        stage('SonarQube - SAST') {
+            steps {
+              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_3f0edd888a8480d32ffee4bc58ac15a96246ee21"
+            }
         }  
         stage('Docker Build and push') {
             steps {
