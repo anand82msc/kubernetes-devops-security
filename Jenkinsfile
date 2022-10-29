@@ -29,23 +29,23 @@ pipeline {
               }
             }
         }
-        stage('SonarQube analysis') {
-            steps {
-              withSonarQubeEnv(credentialsId: 'sonarqube-auth-token', installationName: 'SonarQube') {
-              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_f1a40e7a6072a93a99bd1a4cc1765bce8eea500f"
-            }
-            timeout(time: 3, unit: 'MINUTES'){
-              script{
-                waitForQualityGate abortPipeline: true  
-              }
-            }
-          }
-        }
-        // stage('SonarCube - SAST') {
+        // stage('SonarQube analysis') {
         //     steps {
+        //       withSonarQubeEnv(credentialsId: 'sonarqube-auth-token', installationName: 'SonarQube') {
         //       sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_f1a40e7a6072a93a99bd1a4cc1765bce8eea500f"
         //     }
-        // }  
+        //     timeout(time: 3, unit: 'MINUTES'){
+        //       script{
+        //         waitForQualityGate abortPipeline: true  
+        //       }
+        //     }
+        //   }
+        // }
+        stage('SonarCube - SAST') {
+            steps {
+              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_f1a40e7a6072a93a99bd1a4cc1765bce8eea500f"
+            }
+        }  
         // stage('Docker Build and push') {
         //     steps {
         //       withDockerRegistry([credentialsId:"docker-hub", url: ""]){
