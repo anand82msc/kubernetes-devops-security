@@ -34,16 +34,16 @@ pipeline {
               sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_f1a40e7a6072a93a99bd1a4cc1765bce8eea500f"
             }
         }  
-        stage('Docker Build and push') {
-            steps {
-              withDockerRegistry([credentialsId:"docker-hub", url: ""]){
-                sh "printenv"
-                sh 'docker build -t anand82msc/numeric-app:""$GIT_COMMIT"" .'
-                sh 'docker push anand82msc/numeric-app:""$GIT_COMMIT""'
-                sh 'docker rmi anand82msc/numeric-app:""$GIT_COMMIT""'  
-              }
+        // stage('Docker Build and push') {
+        //     steps {
+        //       withDockerRegistry([credentialsId:"docker-hub", url: ""]){
+        //         sh "printenv"
+        //         sh 'docker build -t anand82msc/numeric-app:""$GIT_COMMIT"" .'
+        //         sh 'docker push anand82msc/numeric-app:""$GIT_COMMIT""'
+        //         sh 'docker rmi anand82msc/numeric-app:""$GIT_COMMIT""'  
+        //       }
               
-            }
-        }   
+        //     }
+        // }   
     }
 }
