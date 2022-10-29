@@ -31,12 +31,12 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps {
-              withSonarQubeEnv('SonarQube') {
+              withSonarQubeEnv(credentialsId: 'sonarqube-auth-token', installationName: 'SonarQube') {
               sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_f1a40e7a6072a93a99bd1a4cc1765bce8eea500f"
             }
             timeout(time: 3, unit: 'MINUTES'){
               script{
-                waitForQualityGate abortPipeline: true
+                waitForQualityGate abortPipeline: true  
               }
             }
           }
