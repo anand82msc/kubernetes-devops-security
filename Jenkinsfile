@@ -41,11 +41,23 @@ pipeline {
         //     }
         //   }
         // }
+        // stage('SonarCube - SAST') {
+        //     steps {
+        //       sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_d744789c1d4d6d4505dceec5401c10865c7ae4ef"
+        //     }
+        // }
         stage('SonarCube - SAST') {
             steps {
-              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_d744789c1d4d6d4505dceec5401c10865c7ae4ef"
+              withSonarQubeEnv('SonarCube'){
+                sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-pipeline -Dsonar.host.url=http://localhost:9000 -Dsonar.login=sqp_d744789c1d4d6d4505dceec5401c10865c7ae4ef"
+              }
+              timeout(time: 3, unit: 'MINUTES'){
+                script{
+                  waitForQualityGate abortPipeline: true
+                }
+              }              
             }
-        }  
+        }
         // stage('Docker Build and push') {
         //     steps {
         //       withDockerRegistry([credentialsId:"docker-hub", url: ""]){
